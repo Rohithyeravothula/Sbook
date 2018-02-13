@@ -54,12 +54,35 @@ ON Users.user_id=Posts.user_id
 
 
 
+Query4
+
+use unique since repeated users might exist
+
+
+
+
+SELECT Friendships.user_id as user_id, COUNT(Friendships.friend_id) as count FROM
+(SELECT femaleusers.user_id FROM
+(SELECT user_id FROM Users WHERE Users.gender="F" AND Users.date_of_birth>"19901220") femaleusers
+JOIN Comments
+ON Comments.post_id=10 AND Comments.commenter_user_id=femaleusers.user_id) candidates
+JOIN Friendships
+ON 	candidates.user_id=Friendships.user_id
+GROUP BY Friendships.user_id;
 
 
 
 Query5
 
-(SELECT user_id FROM Comments WHERE post_id=7) candidates
+
+INSERT INTO Comments (post_id, commenter_user_id, text) values (7, 227, "kVOz9jdFapVNqJDht");
+
+
+SELECT friend_id FROM 
+Posts JOIN Friendships
+ON Posts.post_id=7 AND Posts.user_id=Friendships.user_id
+JOIN Comments
+ON Comments.post_id=7 and Friendships.friend_id=Comments.commenter_user_id;
 
 
 
