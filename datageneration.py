@@ -2,10 +2,10 @@ from random import randint, choice
 import datetime
 import string
 
-USERS = 1000
-friends = int(2.5*USERS)
-POSTS = int(1.4*USERS)
-COMMENTS = int(10*POSTS)
+USERS = 100
+friends = int(25*USERS)
+POSTS = int(14*USERS)
+COMMENTS = int(100*POSTS)
 
 
 
@@ -23,38 +23,37 @@ def get_time():
     return "{}-{}-{}".format(date.year, date.month, date.day)
 
 def get_USERS():
-    data = ""
+    data = "INSERT INTO USERS (NAME, GENDER, DATE_OF_BIRTH) values "
     for i in range(0, USERS):
-        data += "INSERT INTO USERS (NAME, GENDER, DATE_OF_BIRTH) values " \
-                "(\"{}\", \"{}\", \"{}\");".format(get_TEXT(), get_GENDER(), get_time())
-        data += "\n"
-    return data
+        data +="(\"{}\", \"{}\", \"{}\")".format(get_TEXT(), get_GENDER(), get_time())
+        data += ","
+    return data[:-1]+";\n"
 
 def get_FRIENDSHIPS():
-    data = ""
+    data = "INSERT INTO FRIENDSHIPS (USER_ID, FRIEND_ID) values "
     for i in range(0, friends):
         u1 = randint(1, USERS)
         u2 = randint(1, USERS)
-        data += "INSERT INTO FRIENDSHIPS (USER_ID, FRIEND_ID) values ({},{});".format(u1, u2)
-        data += "\n"
-    return data
+        data += "({},{})".format(u1, u2)
+        data += ","
+    return data[:-1]+";\n"
 
 def get_POSTS():
-    data = ""
+    data = "INSERT INTO POSTS (USER_ID, TEXT) values "
     for i in range(0, POSTS):
         u = randint(1, USERS)
-        data += "INSERT INTO POSTS (USER_ID, TEXT) values ({}, \"{}\");".format(u, get_TEXT())
-        data += "\n"
-    return data
+        data += "({}, \"{}\")".format(u, get_TEXT())
+        data += ","
+    return data[:-1]+";\n"
 
 def get_COMMENTS():
-    data = ""
+    data = "INSERT INTO COMMENTS (POST_ID, COMMENTER_USER_ID, TEXT) values "
     for i in range(0, COMMENTS):
         u = randint(1, USERS)
         p = randint(1, POSTS)
-        data += "INSERT INTO COMMENTS (POST_ID, COMMENTER_USER_ID, TEXT) values ({}, {}, \"{}\");".format(p, u, get_TEXT())
-        data += "\n"
-    return data
+        data += "({}, {}, \"{}\")".format(p, u, get_TEXT())
+        data += ","
+    return data[:-1]+";\n"
 
 
 def get_data():
