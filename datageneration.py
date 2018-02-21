@@ -2,7 +2,7 @@ from random import randint, choice
 import datetime
 import string
 
-USERS = 10
+USERS = 1000
 friends = int(2.5*USERS)
 POSTS = int(1.4*USERS)
 COMMENTS = int(10*POSTS)

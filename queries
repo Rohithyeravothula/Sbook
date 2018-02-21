@@ -3,20 +3,13 @@ GRANT ALL PRIVILEGES  ON *.* TO 'rohith'@'localhost';
 SET PASSWORD FOR 'rohith'@'localhost' = PASSWORD('');
 
 source -S /media/disk/Masters/Sem2/DB/HW2/bootstrap.sql
-
-DELETE FROM Friendships;
-DELETE FROM Comments;
-DELETE FROM Posts;
-DELETE FROM 
+mysql < bootstrap.sql
 
 
-drop table Comments;
-drop table Friendships;
-drop table Posts;
-drop table Users;
-
-
-
+DROP TABLE FRIENDSHIPS;
+DROP TABLE COMMENTS;
+DROP TABLE POSTS;
+DROP TABLE USERS;
 
 
 CREATE TABLE USERS (

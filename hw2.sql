@@ -1,44 +1,42 @@
-SELECT Posts.user_id FROM 
-Comments  LEFT JOIN Posts 
-on Comments.post_id=5 AND Comments.commenter_user_id = Posts.user_id;
+SELECT POSTS.USER_ID FROM 
+COMMENTS  LEFT JOIN POSTS 
+on COMMENTS.POST_ID=5 AND COMMENTS.COMMENTER_USER_ID  = POSTS.USER_ID;
 
 
 
 Query1
 
-INSERT INTO Users (name, gender, date_of_birth) values ("answer1", "M", "2020-10-21");
-INSERT INTO Comments (post_id, commenter_user_id, text) values (5, 1001, "smnhovltskzajqybxjgw");
+INSERT INTO USERS (name, gender, date_of_birth) values ("answer1", "M", "2020-10-21");
+INSERT INTO COMMENTS (POST_ID, COMMENTER_USER_ID , text) values (5, 1001, "smnhovltskzajqybxjgw");
 
-SELECT Users.user_id, Users.name FROM
-	(SELECT candidates.commenter_user_id FROM 
-	(SELECT commenter_user_id from Comments WHERE post_id=5) candidates 
-	LEFT JOIN Posts ON candidates.commenter_user_id = Posts.user_id
-	WHERE Posts.user_id is null) first
+SELECT DISTINCT USERS.USER_ID, USERS.NAME FROM
+	(SELECT candidates.COMMENTER_USER_ID  FROM 
+	(SELECT COMMENTER_USER_ID  from COMMENTS WHERE POST_ID=5) candidates 
+	LEFT JOIN POSTS ON candidates.COMMENTER_USER_ID  = POSTS.USER_ID
+	WHERE POSTS.USER_ID is null) first
 	JOIN
-	Users
-	WHERE Users.user_id=first.commenter_user_id;
+	USERS
+	WHERE USERS.USER_ID=first.COMMENTER_USER_ID ;
 
 
 
 Query2
 
-INSERT INTO Friendships (user_id, friend_id) values (2,169);
-INSERT INTO Friendships (user_id, friend_id) values (2,85);
-INSERT INTO Friendships (user_id, friend_id) values (2,778);
-INSERT INTO Friendships (user_id, friend_id) values (2,968);
-
-(SELECT * FROM Friendships WHERE user_id=1) candidates
+INSERT INTO FRIENDSHIPS (USER_ID, FRIEND_ID) VALUES (1,169);
+INSERT INTO FRIENDSHIPS (USER_ID, FRIEND_ID) VALUES (1,85);
+INSERT INTO FRIENDSHIPS (USER_ID, FRIEND_ID) VALUES (1,778);
+INSERT INTO FRIENDSHIPS (USER_ID, FRIEND_ID) VALUES (1,968);
 
 
-SELECT first.friend_id FROM
-	(SELECT candidates.friend_id FROM
-		(SELECT friend_id FROM Friendships WHERE user_id=1) candidates
-		JOIN Users 
-		ON 
-		candidates.friend_id=Users.user_id AND Users.gender="F") first
-	JOIN
-	(SELECT friend_id FROM Friendships WHERE user_id=2) second
-on first.friend_id=second.friend_id;
+SELECT first.FRIEND_ID FROM
+(SELECT candidates.FRIEND_ID FROM
+(SELECT FRIEND_ID FROM FRIENDSHIPS WHERE USER_ID=1) candidates
+JOIN USERS
+ON 
+candidates.FRIEND_ID=USERS.USER_ID AND USERS.GENDER="F") first
+JOIN
+(SELECT FRIEND_ID FROM FRIENDSHIPS WHERE USER_ID=2) second
+ON first.FRIEND_ID=second.FRIEND_ID;
 
 
 
@@ -46,43 +44,50 @@ on first.friend_id=second.friend_id;
 Query3
 
 
+SELECT candidates.USER_ID FROM
+(SELECT USER_ID FROM FRIENDSHIPS
+GROUP BY USER_ID
+HAVING COUNT(FRIEND_ID) > 2) candidates
+JOIN
+(SELECT USERS.USER_ID FROM USERS 
+JOIN POSTS
+ON USERS.USER_ID=POSTS.USER_ID
+GROUP BY USERS.USER_ID
+HAVING COUNT(POST_ID) > 1) postcandidates
+ON candidates.USER_ID=postcandidates.USER_ID;
 
-SELECT user_id FROM 
-Users
-JOIN Posts
-ON Users.user_id=Posts.user_id
 
 
 
 Query4
 
-use unique since repeated users might exist
+use unique since repeated USERS might exist
 
 
 
 
-SELECT Friendships.user_id as user_id, COUNT(Friendships.friend_id) as count FROM
-(SELECT femaleusers.user_id FROM
-(SELECT user_id FROM Users WHERE Users.gender="F" AND Users.date_of_birth>"19901220") femaleusers
-JOIN Comments
-ON Comments.post_id=10 AND Comments.commenter_user_id=femaleusers.user_id) candidates
-JOIN Friendships
-ON 	candidates.user_id=Friendships.user_id
-GROUP BY Friendships.user_id;
+SELECT FRIENDSHIPS.USER_ID as USER_ID, COUNT(FRIENDSHIPS.FRIEND_ID) as count FROM
+(SELECT femaleusers.USER_ID FROM
+(SELECT USER_ID FROM USERS WHERE USERS.gender="F" AND USERS.date_of_birth>"19901220") femaleusers
+JOIN COMMENTS
+ON COMMENTS.POST_ID=10 AND COMMENTS.COMMENTER_USER_ID =femaleusers.USER_ID) candidates
+JOIN FRIENDSHIPS
+ON 	candidates.USER_ID=FRIENDSHIPS.USER_ID
+GROUP BY FRIENDSHIPS.USER_ID;
 
 
 
 Query5
 
 
-INSERT INTO Comments (post_id, commenter_user_id, text) values (7, 227, "kVOz9jdFapVNqJDht");
+INSERT INTO COMMENTS (POST_ID, COMMENTER_USER_ID , text) values (7, 227, "kVOz9jdFapVNqJDht");
 
 
-SELECT friend_id FROM 
-Posts JOIN Friendships
-ON Posts.post_id=7 AND Posts.user_id=Friendships.user_id
-JOIN Comments
-ON Comments.post_id=7 and Friendships.friend_id=Comments.commenter_user_id;
+SELECT FRIEND_ID FROM 
+POSTS JOIN FRIENDSHIPS
+ON POSTS.POST_ID=7 AND POSTS.USER_ID=FRIENDSHIPS.USER_ID
+JOIN COMMENTS
+ON COMMENTS.POST_ID=7 and FRIENDSHIPS.FRIEND_ID=COMMENTS.COMMENTER_USER_ID ;
 
 
 
