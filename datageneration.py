@@ -19,7 +19,7 @@ def get_TEXT():
 
 
 def get_time():
-    date = datetime.date(randint(2005, 2025), randint(1, 12), randint(1, 28))
+    date = datetime.date(randint(1800, 2025), randint(1, 12), randint(1, 28))
     return "{}-{}-{}".format(date.year, date.month, date.day)
 
 def get_USERS():
@@ -31,11 +31,15 @@ def get_USERS():
 
 def get_FRIENDSHIPS():
     data = "INSERT INTO FRIENDSHIPS (USER_ID, FRIEND_ID) values "
+    seen = set()
     for i in range(0, friends):
         u1 = randint(1, USERS)
         u2 = randint(1, USERS)
-        data += "({},{}),({}, {})".format(u1, u2, u2, u1)
-        data += ","
+        if (u1, u2) not in seen and (u2, u1) not in seen and u1!=u2:
+            data += "({},{}),({},{})".format(u1, u2, u2, u1)
+            seen.add((u1, u2))
+            seen.add((u2, u1))
+            data += ","
     return data[:-1]+";\n"
 
 def get_POSTS():
