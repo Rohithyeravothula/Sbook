@@ -34,7 +34,7 @@ def get_FRIENDSHIPS():
     for i in range(0, friends):
         u1 = randint(1, USERS)
         u2 = randint(1, USERS)
-        data += "({},{})".format(u1, u2)
+        data += "({},{}),({}, {})".format(u1, u2, u2, u1)
         data += ","
     return data[:-1]+";\n"
 
